@@ -1416,7 +1416,7 @@ def boosting_menu():
         logo()
         dashboard()
         rp(pan(f"{Y}[1] {G}AUTO REACT    [PAGE & NORMAL]\n"
-                f"{Y}[2] {G}MIX REACT [PAGE & NORMAL]\n"
+                f"{Y}[2] {G}MIX REACT     [LIKE, LOVE, WOW]\n"
                 f"{Y}[3] {G}REACT COMMENT [PAGE & NORMAL]\n"
                 f"{Y}[4] {G}AUTO FOLLOW   [PAGE & NORMAL]\n"
                 f"{Y}[5] {G}AUTO COMMENT  [PAGE & NORMAL]\n"
@@ -1434,14 +1434,14 @@ def boosting_menu():
             reaction_type = input("Enter reaction type (1: LIKE, 2:LOVE, 3:HAHA, 4:WOW, 5:SAD, 6:ANGRY): ")
             reaction_count = int(input("How many reactions would you like to perform? "))
             delay = set_delay()
-            mix_reaction(tool_token(), post_id, reaction_type, reaction_count, delay)
+            comment_reactions(tool_token(), post_id, reaction_type, reaction_count, delay)
             
         elif choice == '2':
             post_id = input("Enter the post ID to react to: ")
             reaction_type = input("Enter reaction type (1: MIX): ")
             reaction_count = int(input("How many reactions would you like to perform? "))
             delay = set_delay()
-            (tool_token(), post_id, reaction_type, reaction_count, delay)
+            mix_reaction(tool_token(), post_id, reaction_type, reaction_count, delay)
             
         elif choice == '3':
             post_id = input("Enter the comment ID to react to: ")
