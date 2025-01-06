@@ -108,9 +108,9 @@ def main():
     save_option = input("Where do you want to save the tokens? (FRA/RPA): ").strip().lower()
     
     if save_option == 'fra':
-        token_file_path = '/sdcard/RFCPTOOLS/tokens/account/fraaccount.txt'
+        token_file_path = '/sdcard/RFCPTOOLS/tokens/account/fraacount.txt'
     elif save_option == 'rpa':
-        token_file_path = '/sdcard/RFCPTOOLS/tokens/account/rpaaccount.txt'
+        token_file_path = '/sdcard/RFCPTOOLS/tokens/account/rpaacount.txt'
     else:
         print("Invalid option. Please choose FRA or RPA.")
         return
