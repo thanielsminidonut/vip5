@@ -7,7 +7,7 @@ from colorama import init, Fore, Style
 import os
 
 def clear_console():
-	os.system('cls' if os.name == 'nt' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'clear')
 init(autoreset=True)
 
 
@@ -18,6 +18,12 @@ user_agents = [
     "Mozilla/5.0 (Linux; Android 11; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Mobile Safari/537.36",
     "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Mobile/15E148 Safari/604.1",
 ]
+
+def ensure_file_exists(file_path):
+    """Check if a file exists, and create it if not."""
+    if not os.path.exists(file_path):
+        with open(file_path, 'w'):  # Just open and close the file to create it
+            pass
 
 def process_credentials(username, password, token_file_path):
     data = {
@@ -54,6 +60,12 @@ def process_credentials(username, password, token_file_path):
         'Connection': 'keep-alive',
     }
 
+   
+    success_file_path = '/sdcard/RFCPTOOLS/credentials/success.txt'
+    failed_file_path = '/sdcard/RFCPTOOLS/credentials/failed.txt'
+    ensure_file_exists(success_file_path)
+    ensure_file_exists(failed_file_path)
+
     try:
         response = requests.post(url, data=data, headers=headers)
         response_data = response.json()
@@ -62,15 +74,28 @@ def process_credentials(username, password, token_file_path):
             token = response_data['access_token']
             save_token(token, token_file_path)
             print(f"{Fore.GREEN}[ SUCCESS ] ---> {Fore.YELLOW}GETTING TOKEN IN {username}{Style.RESET_ALL}")
+            
+            
+            with open(success_file_path, 'a') as success_file:
+                success_file.write(f"{username} | {password}\n")
         else:
             print(f"{Fore.YELLOW}[ FAILURE ] ---> NO TOKEN FOR {username}: {response_data.get('error', 'Unknown error')}{Style.RESET_ALL}")
+            
+         
+            with open(failed_file_path, 'a') as failed_file:
+                failed_file.write(f"{username} | {password}\n")
 
     except Exception as e:
         print(f"{Fore.RED}[ ERROR ] ---> ERROR PROCESSING {username}: {e}{Style.RESET_ALL}")
+        
+        
+        with open(failed_file_path, 'a') as failed_file:
+            failed_file.write(f"{username} | {password}\n")
 
 def save_token(token, token_file_path):
     with open(token_file_path, 'a') as token_file:
         token_file.write(token + '\n')
+
 def get_approval_data(url):
     response = requests.get(url)
     response.raise_for_status()
@@ -100,7 +125,6 @@ def approval():
         print(f"\033[1;97m >> Your Key Has Been Approved!!!")
         return key
     else:
-        
         exit()
 
 def main():
